@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Stop: It's Giphy time</title>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script type="text/javascript">
+		var api_key = "Qz4eY2eD3JtS20nCgXhlu8ntdJqNDp2q";
+
+		var topics = ["football", "tennis", "baseball", "swimming", "skiing"];
+
+		$(document).ready(function(){
+
+			for(let topic of topics){
+				$(".buttons_wrapper").append('<button data-val="'+topic+'">'+topic+'</button>');
+			}
+
+			$(document).on("click", ".gif", function() {
+			  // STEP ONE: study the html above.
+			  // Look at all the data attributes.
+			  // Run the file in the browser. Look at the images.
+
+			  // After we complete steps 1 and 2 we'll be able to pause gifs from giphy.
+
+			  // STEP TWO: make a variable named state and then store the image's data-state into it.
+			  // Use the .attr() method for this.
+
+			  // ============== FILL IN CODE HERE FOR STEP TWO =========================
+			  var state =  $(this).attr("data-state");
+			  // CODE GOES HERE
+			  if(state === "still"){
+			        $(this).attr("src", $(this).attr("data-animate"));
+			        $(this).attr("data-state", "animate");
+			        // =============================================
+			  }
+			  // STEP THREE: Check if the variable state is equal to 'still',
+			  // then update the src attribute of this image to it's data-animate value,
+			  // and update the data-state attribute to 'animate'.
+
+			  else if(state === "animate"){
+			    $(this).attr("src", $(this).attr("data-still"));
+			        $(this).attr("data-state", "still");
+			  }
+			  // If state is equal to 'animate', then update the src attribute of this
+			  // image to it's data-still value and update the data-state attribute to 'still'
+			  // ============== FILL IN CODE HERE FOR STEP THREE =========================
+
+			  // CODE GOES HERE
+
+			  // ==============================================
+
+			  // STEP FOUR: open the file in the browser and click on the images.
+			  // Then click again to pause.
+			});
+				data = {};
+			$(document).on('click', '.buttons_wrapper button', function(){
+			var xhr = $.get("http://api.giphy.com/v1/gifs/search?q="+$(this).attr('data-val')+"&api_key="+api_key+"&limit=10");
+			xhr.done(function(data) { 
+				if(data.data.length > 0){
+					$(".gifs_wrapper").html('');
+					for(let item of data.data){
+						$(".gifs_wrapper").append('\
+							<img src="'+item.images.original_still.url+'" data-still="'+item.images.original_still.url+'" data-animate="'+item.images.original.url+'" data-state="still" class="gif">\
+						');
+					}
+				}else{
+
+					$(".gifs_wrapper").html('No images found searching for '+$(this).attr('data-val'));
+				}
+			});
+			});
+
+			$("#addBtn").click(function(){
+				if($("#addInput").val() !== ""){
+					var topic = $("#addInput").val();
+					topics.push(topic);
+					$(".buttons_wrapper").append('<button data-val="'+topic+'">'+topic+'</button>');					
+				}else{
+					alert("Please fill in the topic input!");
+				}
+			});
+		});
+
+
+	</script>
+	<style>
+		.gifs_wrapper{
+			margin: 0;
+			padding: 0;
+		}
+
+		.gifs_wrapper img{
+			height: 200px;
+			width: auto;
+		}
+	</style>
+</head>
+
+<body>
+
+<div class = "buttons_wrapper">
+
+</div>
+<div class = "gifs_wrapper">
+  
+  <img src="https://media2.giphy.com/media/8rFQp4kHXJ0gU/200_s.gif" data-still="https://media2.giphy.com/media/8rFQp4kHXJ0gU/200_s.gif" data-animate="https://media2.giphy.com/media/8rFQp4kHXJ0gU/200.gif" data-state="still" class="gif">
+  <img src="https://media3.giphy.com/media/W6LbnBigDe4ZG/200_s.gif" data-still="https://media3.giphy.com/media/W6LbnBigDe4ZG/200_s.gif" data-animate="https://media3.giphy.com/media/W6LbnBigDe4ZG/200.gif" data-state="still" class="gif">
+</div>
+<label>Add topic:
+	<input type = "text" id = "addInput"/>
+	<button id = "addBtn">Add</button>
+</label>
+</body>
+
+</html>
