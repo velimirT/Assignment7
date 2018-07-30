@@ -56,7 +56,7 @@
 			});
 				data = {};
 			$(document).on('click', '.buttons_wrapper button', function(){
-			var xhr = $.get("http://api.giphy.com/v1/gifs/search?q="+$(this).attr('data-val')+"&api_key="+api_key+"&limit=10");
+			var xhr = $.get("https://api.giphy.com/v1/gifs/search?q="+$(this).attr('data-val')+"&api_key="+api_key+"&limit=10");
 			xhr.done(function(data) { 
 				if(data.data.length > 0){
 					$(".gifs_wrapper").html('');
